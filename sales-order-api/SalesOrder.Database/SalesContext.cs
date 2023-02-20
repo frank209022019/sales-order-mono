@@ -1,0 +1,30 @@
+﻿using Microsoft.EntityFrameworkCore;
+using SalesOrder.Database.Models;
+using SalesOrder.Database.Models.Configurations;
+
+namespace SalesOrder.Database
+{
+    public class SalesContext : DbContext
+    {
+        public SalesContext(DbContextOptions<SalesContext> options) : base(options)
+        {
+        }
+
+        #region Models
+
+        public DbSet<User> Users { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Category> Categories { get; set; }
+
+        #endregion Models
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // Model Configuration Maps & Seed
+            modelBuilder.ApplyConfiguration(new UserMap());
+            modelBuilder.ApplyConfiguration(new CustomerMap());
+            modelBuilder.ApplyConfiguration(new CategoryMap());
+            modelBuilder.ApplyConfiguration(new ProductMap());
+        }
+    }
+}
