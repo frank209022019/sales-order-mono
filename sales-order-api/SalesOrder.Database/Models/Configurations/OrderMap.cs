@@ -46,12 +46,10 @@ namespace SalesOrder.Database.Models.Configurations
             builder.HasKey(i => i.Id);
 
             builder.HasOne(op => op.Order)
-           .WithMany(o => o.OrderProducts)
-           .HasForeignKey(op => op.OrderId);
+           .WithMany(o => o.OrderProducts);
 
             builder.HasOne(op => op.Product)
-                .WithMany(p => p.OrderProducts)
-                .HasForeignKey(op => op.ProductId);
+                .WithMany(p => p.OrderProducts);
 
             builder.Property(op => op.Quantity)
                 .IsRequired();

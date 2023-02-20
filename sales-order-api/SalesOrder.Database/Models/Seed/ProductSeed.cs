@@ -14,7 +14,8 @@ namespace SalesOrder.Database.Models.Seed
                 CreatedById = SalesOrderContstants.UserId1,
                 DateCreated = DateTime.Now.AddDays(-1000),
                 ProductCode = SalesOrderContstants.ProductCode1,
-                Description = "Category #1 Mock",
+                Name = "Product #1",
+                Description = "Product #1 Description",
                 IsActive = true,
             },
             new Product
@@ -23,7 +24,8 @@ namespace SalesOrder.Database.Models.Seed
                 CreatedById = SalesOrderContstants.UserId1,
                 DateCreated = DateTime.Now.AddDays(-1000),
                 ProductCode = SalesOrderContstants.ProductCode2,
-                Description = "Category #2 Mock",
+                Name = "Product #2",
+                Description = "Product #2 Description",
                 IsActive = true,
             },
             new Product
@@ -32,7 +34,8 @@ namespace SalesOrder.Database.Models.Seed
                 CreatedById = SalesOrderContstants.UserId1,
                 DateCreated = DateTime.Now.AddDays(-1000),
                 ProductCode = SalesOrderContstants.ProductCode3,
-                Description = "Category #3 Mock",
+                Name = "Product #3",
+                Description = "Product #3 Description",
                 IsActive = true,
             });
         }

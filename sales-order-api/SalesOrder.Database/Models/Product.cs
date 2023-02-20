@@ -29,7 +29,7 @@ namespace SalesOrder.Database.Models
 
         #region Navigation
 
-        public ICollection<OrderProduct> OrderProducts { get; set; }
+        public virtual ICollection<OrderProduct> OrderProducts { get; set; }
 
         #endregion Navigation
     }
