@@ -26,5 +26,11 @@ namespace SalesOrder.Database.Models
         public string Description { get; set; }
 
         #endregion Properties
+
+        #region Navigation
+
+        public ICollection<OrderProduct> OrderProducts { get; set; }
+
+        #endregion Navigation
     }
 }

@@ -29,9 +29,11 @@ namespace SalesOrder.Database.Models
 
         #region Navigation
 
-        public virtual ICollection<SalesOrder> SalesOrders { get; set; }
+        public virtual ICollection<Order> SalesOrders { get; set; }
         public virtual ICollection<Customer> Customers { get; set; }
         public virtual ICollection<Category> Categories { get; set; }
+        public virtual ICollection<Product> Products { get; set; }
+        public virtual ICollection<Order> SalesOrder { get; set; }
 
         #endregion Navigation
     }
