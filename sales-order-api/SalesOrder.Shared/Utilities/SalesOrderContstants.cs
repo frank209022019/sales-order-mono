@@ -2,6 +2,11 @@
 {
     public class SalesOrderContstants
     {
+        #region Utilities
+        public static readonly decimal VATPercentage = 15;
+
+        #endregion
+
         #region Database
 
         public static readonly string DevConnectionStringName = "SalesOrderDEVConnectionString";

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using SalesOrder.Database;
 using SalesOrder.Database.Models;
@@ -94,14 +93,14 @@ namespace SalesOrder.Service.Services
                 int currentMessageId = 1;
 
                 // 1. Valid user code
-                if (!_context.Users.Where(i => !i.IsActive).Any())
+                if (!_context.Users.Where(i => i.IsActive).Any())
                 {
                     messages.Add(new MessageDTO() { Id = currentMessageId, Message = "Invalid user code in sales order" });
                     currentMessageId++;
                 }
 
                 // 2. Valid category code
-                if (!_context.Categories.Where(i => !i.IsActive).Any())
+                if (!_context.Categories.Where(i => i.IsActive).Any())
                 {
                     messages.Add(new MessageDTO() { Id = currentMessageId, Message = "Invalid category code in sales order" });
                     currentMessageId++;
@@ -115,7 +114,7 @@ namespace SalesOrder.Service.Services
                 }
 
                 // 4. Valid customer code
-                if (!_context.Categories.Where(i => !i.IsActive).Any())
+                if (!_context.Categories.Where(i => i.IsActive).Any())
                 {
                     messages.Add(new MessageDTO() { Id = currentMessageId, Message = "Invalid category code in sales order" });
                     currentMessageId++;
@@ -131,10 +130,10 @@ namespace SalesOrder.Service.Services
                 // 6. Product validation - valid product code, quantity
                 if (salesOrder.Products.Any())
                 {
-                    var allProducts = _context.Products.Where(i => !i.IsActive).ToList();
+                    var products = _context.Products.Where(i => !i.IsActive).ToList();
                     salesOrder.Products.ForEach((SalesOrderProductRequestDTO prod) =>
                     {
-                        if (prod.Quantity < 1 || !allProducts.Where(i => i.ProductCode == prod.ProductCode).Any())
+                        if (prod.Quantity < 1 || !products.Where(i => i.ProductCode == prod.ProductCode).Any())
                         {
                             messages.Add(new MessageDTO() { Id = currentMessageId, Message = $"Invalid product code or quantity for {prod.ProductCode ?? "NO_PRODUCT_CODE"}" });
                             currentMessageId++;
@@ -163,10 +162,19 @@ namespace SalesOrder.Service.Services
         {
             try
             {
+                // Collections
+                var users = _context.Users.Where(i => i.IsActive).ToList();
+                var customers = _context.Customers.Where(i => i.IsActive).ToList();
+                var products = _context.Products.Where(i => i.IsActive).ToList();
+                var categories = _context.Categories.Where(i => i.IsActive).ToList();
+
                 // Create Order record
                 Order order = new Order()
                 {
                     Id = Guid.NewGuid(),
+                    User = users.FirstOrDefault(i => i.UserCode == salesOrder.UserCode),
+                    Category = categories.FirstOrDefault(i => i.CategoryCode == salesOrder.CategoryCode),
+                    Customer = customers.FirstOrDefault(i => i.CustomerCode == salesOrder.CustomerCode),
                     CreatedById = SalesOrderContstants.UserId1,
                     DateCreated = DateTime.Now,
                     OrderCode = OrderHelper.GenerateOrderCode(),
@@ -177,15 +185,43 @@ namespace SalesOrder.Service.Services
                 };
 
                 // Create OrderProduct record/s
-                var allProducts = _context.Products.ToList();
+                List<OrderProduct> orderProducts = new List<OrderProduct>();
                 foreach(var product in salesOrder.Products)
                 {
+                    // Work out financials
+                    var currentPrice = products.FirstOrDefault(i => i.ProductCode == product.ProductCode).Price;
+                    var total = currentPrice * product.Quantity;
+                    var tax = (SalesOrderContstants.VATPercentage / 100) * total;
 
+                    // Create model
+                    OrderProduct temp = new OrderProduct()
+                    {
+                        Id = Guid.NewGuid(),
+                        CreatedById = SalesOrderContstants.UserId1,
+                        DateCreated = DateTime.Now,
+                        Quantity = product.Quantity,
+                        CurrentProductPrice = currentPrice,
+                        Total = total,
+                        TaxAmount = tax,
+                        SubTotal = total - tax,
+                        VAT = SalesOrderContstants.VATPercentage.ToString().ToUpper(),
+                    };
+                    orderProducts.Add(temp);
                 }
+
+                // Update order total
+                order.Total = orderProducts.Sum(i => i.Total);
+                order.TaxAmount = orderProducts.Sum(i => i.TaxAmount);
+                order.SubTotal = orderProducts.Sum(i => i.SubTotal);
+
+                // Save to database
+                _context.Orders.Add(order);
+                _context.OrderProducts.AddRange(orderProducts);
+                _context.SaveChanges();
 
                 // Create result with object to serialize to JSON, messages
 
-                return false;
+                return true;
             }
             catch (Exception ex)
             {

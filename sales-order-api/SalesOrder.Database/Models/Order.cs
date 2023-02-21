@@ -61,10 +61,11 @@ namespace SalesOrder.Database.Models
         #region Properties
 
         public int Quantity { get; set; }
-        public decimal CurrentProductPrice { get; set; }
+        public decimal CurrentProductPrice { get; set; } //  Includes VAT
         public decimal SubTotal { get; set; }
         public decimal TaxAmount { get; set; }
         public decimal Total { get; set; }
+        public string VAT { get; set; }
 
         #endregion Properties
 

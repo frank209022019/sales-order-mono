@@ -28,6 +28,15 @@ namespace SalesOrder.Database.Models.Configurations
             builder.Property(i => i.Total)
                .IsRequired();
 
+            builder.HasOne(i => i.Customer)
+               .WithMany(o => o.Orders);
+
+            builder.HasOne(i => i.Category)
+               .WithMany(o => o.Orders);
+
+            builder.HasOne(i => i.User)
+              .WithMany(o => o.Orders);
+
             builder.Property(i => i.DateCreated)
                 .IsRequired();
 
