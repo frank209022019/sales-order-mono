@@ -20,16 +20,21 @@ namespace SalesOrder.Database.Models
         #endregion Model-Base
 
         #region Properties
+
         public string OrderCode { get; set; }
         public int ProductTotal { get; set; }
         public decimal SubTotal { get; set; }
         public decimal TaxAmount { get; set; }
         public decimal Total { get; set; }
-        #endregion
+
+        #endregion Properties
 
         #region Navigation
 
         public virtual ICollection<OrderProduct> OrderProducts { get; set; }
+        public virtual Customer Customer { get; set; }
+        public virtual Category Category { get; set; }
+        public virtual User User { get; set; }
 
         #endregion Navigation
     }

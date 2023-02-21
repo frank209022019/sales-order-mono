@@ -28,5 +28,10 @@ namespace SalesOrder.Database.Models
         public string ContactNumber { get; set; }
 
         #endregion Properties
+
+        #region Navigation
+        public virtual ICollection<Order> Orders { get; set; }
+
+        #endregion
     }
 }

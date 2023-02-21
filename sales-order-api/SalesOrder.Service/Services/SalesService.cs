@@ -1,8 +1,13 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using SalesOrder.Database;
+using SalesOrder.Database.Models;
+using SalesOrder.Service.Helpers;
 using SalesOrder.Service.Interfaces;
 using SalesOrder.Shared.DTOs;
+using SalesOrder.Shared.Utilities;
+using Serilog;
 
 namespace SalesOrder.Service.Services
 {
@@ -36,7 +41,9 @@ namespace SalesOrder.Service.Services
             }
             catch (Exception ex)
             {
-                // Failure to deserialze salesOrderString
+                Log.Error(ex.Message);
+
+                // Failure to validate salesOrder
                 var result = new ValidateDeserilalizeResultDTO() { IsValid = false, SalesOrder = null };
                 result.Messages.Add(new MessageDTO() { Id = 1, Message = "Failed to validate incoming sales order file." });
                 result.Messages.Add(new MessageDTO() { Id = 2, Message = ex.InnerException.Message });
@@ -66,7 +73,9 @@ namespace SalesOrder.Service.Services
             }
             catch (Exception ex)
             {
-                // Failure to deserialze salesOrderString
+                Log.Error(ex.Message);
+
+                // Failure to deserialze salesOrder
                 var result = new ValidateDeserilalizeResultDTO() { IsValid = false, SalesOrder = null };
                 result.Messages.Add(new MessageDTO() { Id = 1, Message = "Failed to deserialze incoming sales order structure." });
                 result.Messages.Add(new MessageDTO() { Id = 2, Message = ex.InnerException.Message });
@@ -137,7 +146,9 @@ namespace SalesOrder.Service.Services
             }
             catch (Exception ex)
             {
-                // Failure to deserialze salesOrderString
+                Log.Error(ex.Message);
+
+                // Failure to validate salesOrder
                 var result = new List<MessageDTO>();
                 result.Add(new MessageDTO() { Id = 1, Message = "Failed to validate incoming sales order data." });
                 result.Add(new MessageDTO() { Id = 2, Message = ex.InnerException.Message });
@@ -150,7 +161,42 @@ namespace SalesOrder.Service.Services
         /// </summary>
         public async Task<bool> ProcessSalesOrder(SalesOrderRequestDTO salesOrder)
         {
-            return false;
+            try
+            {
+                // Create Order record
+                Order order = new Order()
+                {
+                    Id = Guid.NewGuid(),
+                    CreatedById = SalesOrderContstants.UserId1,
+                    DateCreated = DateTime.Now,
+                    OrderCode = OrderHelper.GenerateOrderCode(),
+                    ProductTotal = salesOrder.Products.Count(),
+                    SubTotal = 0,
+                    TaxAmount = 0,
+                    Total = 0,
+                };
+
+                // Create OrderProduct record/s
+                var allProducts = _context.Products.ToList();
+                foreach(var product in salesOrder.Products)
+                {
+
+                }
+
+                // Create result with object to serialize to JSON, messages
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.Message);
+
+                // Failure to process salesOrder
+                var result = new List<MessageDTO>();
+                result.Add(new MessageDTO() { Id = 1, Message = "Failed to process sales order data." });
+                result.Add(new MessageDTO() { Id = 2, Message = ex.InnerException.Message });
+                return false;
+            }
         }
     }
 }

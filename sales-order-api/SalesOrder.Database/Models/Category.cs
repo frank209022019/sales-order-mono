@@ -17,8 +17,16 @@ namespace SalesOrder.Database.Models
 
         #endregion Model-Base
 
+        #region Properties
+
         public string CategoryCode { get; set; }
 
         public string Description { get; set; }
+
+        #endregion
+
+        #region Navigation
+        public virtual List<Order> Orders { get; set; }
+        #endregion
     }
 }

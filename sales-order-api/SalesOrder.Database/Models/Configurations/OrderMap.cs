@@ -13,23 +13,20 @@ namespace SalesOrder.Database.Models.Configurations
 
             builder.HasKey(i => i.Id);
 
-            builder.Property(op => op.OrderCode)
+            builder.Property(i => i.OrderCode)
              .IsRequired();
 
-            builder.Property(op => op.ProductTotal)
+            builder.Property(i => i.ProductTotal)
               .IsRequired();
 
-            builder.Property(op => op.SubTotal)
+            builder.Property(i => i.SubTotal)
                .IsRequired();
 
-            builder.Property(op => op.TaxAmount)
+            builder.Property(i => i.TaxAmount)
                .IsRequired();
 
-            builder.Property(op => op.Total)
+            builder.Property(i => i.Total)
                .IsRequired();
-
-            builder.Property(i => i.CreatedById)
-              .IsRequired();
 
             builder.Property(i => i.DateCreated)
                 .IsRequired();
@@ -60,25 +57,25 @@ namespace SalesOrder.Database.Models.Configurations
 
             builder.HasKey(i => i.Id);
 
-            builder.HasOne(op => op.Order)
-           .WithMany(o => o.OrderProducts);
+            builder.HasOne(i => i.Order)
+                .WithMany(o => o.OrderProducts);
 
-            builder.HasOne(op => op.Product)
+            builder.HasOne(i => i.Product)
                 .WithMany(p => p.OrderProducts);
 
-            builder.Property(op => op.Quantity)
+            builder.Property(i => i.Quantity)
                 .IsRequired();
 
-            builder.Property(op => op.CurrentProductPrice)
+            builder.Property(i => i.CurrentProductPrice)
                .IsRequired();
 
-            builder.Property(op => op.SubTotal)
+            builder.Property(i => i.SubTotal)
                .IsRequired();
 
-            builder.Property(op => op.TaxAmount)
+            builder.Property(i => i.TaxAmount)
                .IsRequired();
 
-            builder.Property(op => op.Total)
+            builder.Property(i => i.Total)
                .IsRequired();
 
             builder.Property(i => i.CreatedById)
