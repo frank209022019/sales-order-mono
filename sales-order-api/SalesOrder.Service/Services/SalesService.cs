@@ -2,7 +2,7 @@
 
 namespace SalesOrder.Service.Services
 {
-    public class SalesService : ISalesService
+    public class SalesOrderService : ISalesOrderService
     {
     }
 }

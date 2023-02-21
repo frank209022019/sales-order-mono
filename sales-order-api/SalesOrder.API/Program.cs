@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using SalesOrder.Database;
+using SalesOrder.Service.Interfaces;
+using SalesOrder.Service.Services;
 using SalesOrder.Shared.Utilities;
 using Serilog;
 
@@ -31,6 +33,9 @@ builder.Services.AddDbContext<SalesContext>(options => options.UseSqlServer(buil
 builder.Host.UseSerilog((ctx, lc) => lc
     .WriteTo.Console());
 
+// Services
+builder.Services.AddTransient<ISalesOrderService, SalesOrderService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -39,6 +44,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("AllowAllOrigins");
 
 app.UseHttpsRedirection();
 

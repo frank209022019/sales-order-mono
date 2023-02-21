@@ -3,10 +3,10 @@ import {useDropzone} from 'react-dropzone';
 import {toast} from 'react-toastify';
 import styled from 'styled-components';
 
-import {SubmitSalesOrder} from '../services/UploadService';
+import {submitSalesOrder} from '../services/UploadService';
 
 // #region Style
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
+
 export const DropzoneWrapper = styled.div`
   cursor: pointer;
 
@@ -18,7 +18,7 @@ export const DropzoneWrapper = styled.div`
 `;
 // #endregion
 
-const onDrop = (event: any) => {
+const onDrop = async (event: any) => {
 	const files: File[] = event as File[];
 	if (!files || files.length !== 1) {
 		toast.error('Upload a single valid JSON file');
@@ -28,7 +28,16 @@ const onDrop = (event: any) => {
 	if (file.name.endsWith('.json')) {
 		// The file has a valid extension
 		toast.warning(`Please wait while file ${file.name} is uploaded`);
-		// SubmitSalesOrder(file);
+		// Submit sales order
+		await submitSalesOrder(file).then(result => {
+			// do something for success
+			// eslint-disable-next-line no-debugger
+			debugger;
+		}).catch(error => {
+			// do something for failure
+			// eslint-disable-next-line no-debugger
+			debugger;
+		});
 	} else {
 		// The file does not have a valid extension
 		toast.error(`The file ${file.name} is not a valid JSON file`);
@@ -37,6 +46,7 @@ const onDrop = (event: any) => {
 
 function SalesDropzone() {
 	const onDropAccepted = useCallback((acceptedFiles: any) => {
+		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		onDrop(acceptedFiles);
 	}, [onDrop]);
 
