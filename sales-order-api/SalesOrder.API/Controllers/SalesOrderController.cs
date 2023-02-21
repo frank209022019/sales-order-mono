@@ -67,28 +67,9 @@ namespace SalesOrder.API.Controllers
                     });
                 }
 
-                // process the uploaded file here
-                // return a proper response model & byte[]
-
-                // create a response model
-                //var responseModel = new MyResponseModel
-                //{
-                //    Success = true,
-                //    RequestMessage = "Some request message",
-                //    JsonData = new byte[salesOrder.Length]
-                //};
-
-                //// read the file into a byte array
-                //using (var stream = new MemoryStream())
-                //{
-                //    await salesOrder.CopyToAsync(stream);
-                //    responseModel.JsonData = stream.ToArray();
-                //}
+                // Database operation
 
                 return Ok();
-
-                // return the response as a JSON file
-                //return File(responseModel.JsonData, "application/json", "myfile.json");
             }
             catch (Exception ex)
             {
