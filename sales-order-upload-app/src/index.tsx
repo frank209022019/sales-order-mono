@@ -13,7 +13,7 @@ const root = ReactDOM.createRoot(
 root.render(
 	<React.StrictMode>
 		<App />
-		<ToastContainer />
+		<ToastContainer limit={1} newestOnTop={true} />
 	</React.StrictMode>,
 );
 

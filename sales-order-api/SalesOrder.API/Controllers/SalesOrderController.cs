@@ -1,19 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
+using SalesOrder.API.Helpers;
 using SalesOrder.Service.Interfaces;
 using SalesOrder.Shared.DTOs;
 using Serilog;
 
 namespace SalesOrder.API.Controllers
 {
-    //public class MyResponseModel
-    //{
-    //    public bool Success { get; set; }
-    //    public string RequestMessage { get; set; }
-    //    public Byte[] JsonData { get; set; }
-    //}
-
     [ApiController]
     [Route("api/sales-order")]
     public class SalesOrderController : Controller
@@ -32,27 +25,47 @@ namespace SalesOrder.API.Controllers
         {
             try
             {
+                // Default
+                string errorFileName = $"sales_order_response_{DateTime.Now.ToString("yyyyMMdd")}.json";
+
                 // Validate file & length
-                var isValidFile = await _service.ValidateSalesOrderFile(salesOrder);
+                ValidateDeserilalizeResultDTO isValidFile = await _service.ValidateSalesOrderFile(salesOrder);
                 if (!isValidFile.IsValid)
                 {
                     // TODO: Return response with invalid & messages
+                    return Ok(new SalesOrderResponseDTO()
+                    {
+                        IsValid = false,
+                        FileName = errorFileName,
+                        Data = ResponseSerializer.CreateFailedResponseJsonFile(isValidFile.Messages, errorFileName)
+                    });
                 }
 
                 // Try to deserialize json contents to DTO
-                var isValidDTO = await _service.DeseriliazeSalesOrder(salesOrder);
-                if (!isValidFile.IsValid)
+                ValidateDeserilalizeResultDTO isValidDTO = await _service.DeseriliazeSalesOrder(salesOrder);
+                if (!isValidDTO.IsValid)
                 {
                     // TODO: Return response with invalid & messages
+                    return Ok(new SalesOrderResponseDTO()
+                    {
+                        IsValid = false,
+                        FileName = errorFileName,
+                        Data = ResponseSerializer.CreateFailedResponseJsonFile(isValidDTO.Messages, errorFileName)
+                    });
                 }
 
                 // Validate data from json file
-                var validateResult = await _service.ValidateSalesOrder(isValidDTO.SalesOrder);
-                if(validateResult.Count() > 0)
+                List<MessageDTO> validateResult = await _service.ValidateSalesOrder(isValidDTO.SalesOrder);
+                if (validateResult.Count() > 0)
                 {
                     // TODO: Return response with invalid & messages
+                    return Ok(new SalesOrderResponseDTO()
+                    {
+                        IsValid = false,
+                        FileName = errorFileName,
+                        Data = ResponseSerializer.CreateFailedResponseJsonFile(validateResult, errorFileName)
+                    });
                 }
-
 
                 // process the uploaded file here
                 // return a proper response model & byte[]
