@@ -20,6 +20,9 @@ namespace SalesOrder.Database.Models.Configurations
              .IsRequired()
              .HasMaxLength(50);
 
+            builder.Property(i => i.Price)
+             .IsRequired();
+
             builder.Property(i => i.CreatedById)
               .IsRequired();
 

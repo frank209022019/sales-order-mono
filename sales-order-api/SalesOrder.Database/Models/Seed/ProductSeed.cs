@@ -16,6 +16,7 @@ namespace SalesOrder.Database.Models.Seed
                 ProductCode = SalesOrderContstants.ProductCode1,
                 Name = "Product #1",
                 Description = "Product #1 Description",
+                Price = 20,
                 IsActive = true,
             },
             new Product
@@ -26,6 +27,7 @@ namespace SalesOrder.Database.Models.Seed
                 ProductCode = SalesOrderContstants.ProductCode2,
                 Name = "Product #2",
                 Description = "Product #2 Description",
+                Price = 40,
                 IsActive = true,
             },
             new Product
@@ -36,6 +38,7 @@ namespace SalesOrder.Database.Models.Seed
                 ProductCode = SalesOrderContstants.ProductCode3,
                 Name = "Product #3",
                 Description = "Product #3 Description",
+                Price = 60,
                 IsActive = true,
             });
         }

@@ -16,6 +16,8 @@ namespace SalesOrder.Database.Models.Seed
                 CustomerCode = SalesOrderContstants.CustomerCode1,
                 Name = "Golden Gate Consulting",
                 Address = "123 Main Street, Anytown, USA",
+                Email = "golden@nomail.com",
+                ContactNumber = "081-3110121",
                 IsActive = true,
             },
             new Customer
@@ -26,6 +28,8 @@ namespace SalesOrder.Database.Models.Seed
                 CustomerCode = SalesOrderContstants.CustomerCode2,
                 Name = "Summit Solutions Inc.",
                 Address = "456 Oak Avenue, Somewhereville, Canada",
+                Email = "summit@nomail.com",
+                ContactNumber = "051-9182102",
                 IsActive = true,
             });
         }

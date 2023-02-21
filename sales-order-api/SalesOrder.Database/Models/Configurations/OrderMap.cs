@@ -13,6 +13,21 @@ namespace SalesOrder.Database.Models.Configurations
 
             builder.HasKey(i => i.Id);
 
+            builder.Property(op => op.OrderCode)
+             .IsRequired();
+
+            builder.Property(op => op.ProductTotal)
+              .IsRequired();
+
+            builder.Property(op => op.SubTotal)
+               .IsRequired();
+
+            builder.Property(op => op.TaxAmount)
+               .IsRequired();
+
+            builder.Property(op => op.Total)
+               .IsRequired();
+
             builder.Property(i => i.CreatedById)
               .IsRequired();
 
@@ -53,6 +68,18 @@ namespace SalesOrder.Database.Models.Configurations
 
             builder.Property(op => op.Quantity)
                 .IsRequired();
+
+            builder.Property(op => op.CurrentProductPrice)
+               .IsRequired();
+
+            builder.Property(op => op.SubTotal)
+               .IsRequired();
+
+            builder.Property(op => op.TaxAmount)
+               .IsRequired();
+
+            builder.Property(op => op.Total)
+               .IsRequired();
 
             builder.Property(i => i.CreatedById)
               .IsRequired();
