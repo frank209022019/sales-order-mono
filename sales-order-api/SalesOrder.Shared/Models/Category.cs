@@ -1,8 +1,8 @@
-﻿using SalesOrder.Database.Models.Utilities;
+﻿using SalesOrder.Shared.Models.Utilities;
 
-namespace SalesOrder.Database.Models
+namespace SalesOrder.Shared.Models
 {
-    public class Customer : IIdentify, IAudit, IState
+    public class Category : IIdentify, IAudit, IState
     {
         #region Model-Base
 
@@ -19,19 +19,14 @@ namespace SalesOrder.Database.Models
 
         #region Properties
 
-        public string CustomerCode { get; set; }
+        public string CategoryCode { get; set; }
 
-        public string Name { get; set; }
+        public string Description { get; set; }
 
-        public string Address { get; set; }
-        public string Email { get; set; }
-        public string ContactNumber { get; set; }
-
-        #endregion Properties
+        #endregion
 
         #region Navigation
-        public virtual ICollection<Order> Orders { get; set; }
-
+        public virtual List<Order> Orders { get; set; }
         #endregion
     }
 }

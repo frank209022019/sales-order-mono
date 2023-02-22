@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SalesOrder.Database.Models;
-using SalesOrder.Database.Models.Configurations;
+using SalesOrder.Shared.Models;
+using SalesOrder.Shared.Models.Configurations;
 
 namespace SalesOrder.Database
 {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace SalesOrder.Database.Models.Configurations
+namespace SalesOrder.Shared.Models.Configurations
 {
     #region Order
 

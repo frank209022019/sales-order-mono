@@ -1,28 +1,34 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SalesOrder.Database.Models.Seed;
+using SalesOrder.Shared.Models.Seed;
 
-namespace SalesOrder.Database.Models.Configurations
+namespace SalesOrder.Shared.Models.Configurations
 {
-    public class UserMap : IEntityTypeConfiguration<User>
+    public class CustomerMap : IEntityTypeConfiguration<Customer>
     {
-        public void Configure(EntityTypeBuilder<User> builder)
+        public void Configure(EntityTypeBuilder<Customer> builder)
         {
-            builder.ToTable("Users");
+            builder.ToTable("Customers");
 
             builder.HasKey(i => i.Id);
 
-            builder.Property(i => i.UserCode)
+            builder.Property(i => i.CustomerCode)
               .IsRequired()
               .HasMaxLength(10);
 
-            builder.Property(i => i.FirstName)
-            .IsRequired()
-            .HasMaxLength(50);
+            builder.Property(i => i.Name)
+             .IsRequired()
+             .HasMaxLength(50);
 
-            builder.Property(i => i.LastName)
+            builder.Property(i => i.Address)
               .IsRequired()
               .HasMaxLength(50);
+
+            builder.Property(i => i.Email)
+            .IsRequired();
+
+            builder.Property(i => i.ContactNumber)
+            .IsRequired();
 
             builder.Property(i => i.CreatedById)
               .IsRequired();
@@ -43,7 +49,7 @@ namespace SalesOrder.Database.Models.Configurations
             builder.Property(r => r.DateDeleted).HasDefaultValue(null);
 
             // Seed
-            UserSeed.AddSeedData(builder);
+            CustomerSeed.AddSeedData(builder);
         }
     }
 }

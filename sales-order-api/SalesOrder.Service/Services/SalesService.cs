@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using SalesOrder.Database;
-using SalesOrder.Database.Models;
 using SalesOrder.Service.Helpers;
 using SalesOrder.Service.Interfaces;
 using SalesOrder.Shared.DTOs;
+using SalesOrder.Shared.Models;
 using SalesOrder.Shared.Utilities;
 using Serilog;
 
@@ -22,11 +22,11 @@ namespace SalesOrder.Service.Services
         /// <summary>
         /// Function to validate the incoming file.
         /// </summary>
-        public async Task<ValidateDeserilalizeResultDTO> ValidateSalesOrderFile(IFormFile salesOrder)
+        public async Task<SalesOrderResultDTO> ValidateSalesOrderFile(IFormFile salesOrder)
         {
             try
             {
-                var result = new ValidateDeserilalizeResultDTO() { IsValid = false, SalesOrder = null };
+                var result = new SalesOrderResultDTO() { IsValid = false, SalesOrder = null };
                 if (salesOrder == null || salesOrder.Length == 0)
                 {
                     // Invalid
@@ -43,7 +43,7 @@ namespace SalesOrder.Service.Services
                 Log.Error(ex.Message);
 
                 // Failure to validate salesOrder
-                var result = new ValidateDeserilalizeResultDTO() { IsValid = false, SalesOrder = null };
+                var result = new SalesOrderResultDTO() { IsValid = false, SalesOrder = null };
                 result.Messages.Add(new MessageDTO() { Id = 1, Message = "Failed to validate incoming sales order file." });
                 result.Messages.Add(new MessageDTO() { Id = 2, Message = ex.Message });
                 return result;
@@ -53,7 +53,7 @@ namespace SalesOrder.Service.Services
         /// <summary>
         /// Function used to deserialize the incoming sales order to ensure the correct format is implemented in the file.
         /// </summary>
-        public async Task<ValidateDeserilalizeResultDTO> DeseriliazeSalesOrder(IFormFile salesOrder)
+        public async Task<SalesOrderResultDTO> DeseriliazeSalesOrder(IFormFile salesOrder)
         {
             try
             {
@@ -68,14 +68,14 @@ namespace SalesOrder.Service.Services
                 var result = JsonConvert.DeserializeObject<SalesOrderRequestDTO>(fileContent);
 
                 // Return DTO
-                return new ValidateDeserilalizeResultDTO() { IsValid = true, SalesOrder = result };
+                return new SalesOrderResultDTO() { IsValid = true, SalesOrder = result };
             }
             catch (Exception ex)
             {
                 Log.Error(ex.Message);
 
                 // Failure to deserialze salesOrder
-                var result = new ValidateDeserilalizeResultDTO() { IsValid = false, SalesOrder = null };
+                var result = new SalesOrderResultDTO() { IsValid = false, SalesOrder = null };
                 result.Messages.Add(new MessageDTO() { Id = 1, Message = "Failed to deserialze incoming sales order structure." });
                 result.Messages.Add(new MessageDTO() { Id = 2, Message = ex.Message });
                 return result;
@@ -158,7 +158,7 @@ namespace SalesOrder.Service.Services
         /// <summary>
         /// Function to process the sales order once validation is complete.
         /// </summary>
-        public async Task<bool> ProcessSalesOrder(SalesOrderRequestDTO salesOrder)
+        public async Task<SalesOrderResultDTO> ProcessSalesOrder(SalesOrderRequestDTO salesOrder)
         {
             try
             {
@@ -183,10 +183,10 @@ namespace SalesOrder.Service.Services
                     TaxAmount = 0,
                     Total = 0,
                     VAT = SalesOrderContstants.VATPercentage.ToString().ToUpper(),
+                    OrderProducts = new List<OrderProduct>()
                 };
 
                 // Create OrderProduct record/s
-                List<OrderProduct> orderProducts = new List<OrderProduct>();
                 foreach(var product in salesOrder.Products)
                 {
                     // Work out financials
@@ -205,33 +205,33 @@ namespace SalesOrder.Service.Services
                         Total = total,
                         TaxAmount = tax,
                         SubTotal = Math.Round(total - tax, 2),
+                        Order = order,
+                        Product = products.FirstOrDefault(i => i.ProductCode == product.ProductCode)
                     };
-                    orderProducts.Add(temp);
+                    order.OrderProducts.Add(temp);
                 }
 
                 // Update order total
-                order.Total = Math.Round(orderProducts.Sum(i => i.Total), 2);
-                order.TaxAmount = Math.Round(orderProducts.Sum(i => i.TaxAmount), 2);
-                order.SubTotal = Math.Round(orderProducts.Sum(i => i.SubTotal), 2);
+                order.Total = Math.Round(order.OrderProducts.Sum(i => i.Total), 2);
+                order.TaxAmount = Math.Round(order.OrderProducts.Sum(i => i.TaxAmount), 2);
+                order.SubTotal = Math.Round(order.OrderProducts.Sum(i => i.SubTotal), 2);
 
                 // Save to database
                 _context.Orders.Add(order);
-                _context.OrderProducts.AddRange(orderProducts);
                 _context.SaveChanges();
 
-                // Create result with object to serialize to JSON, messages
-
-                return true;
+                // Return DTO
+                return new SalesOrderResultDTO() { IsValid = true, SalesOrder = order };
             }
             catch (Exception ex)
             {
                 Log.Error(ex.Message);
 
                 // Failure to process salesOrder
-                var result = new List<MessageDTO>();
-                result.Add(new MessageDTO() { Id = 1, Message = "Failed to process sales order data." });
-                result.Add(new MessageDTO() { Id = 2, Message = ex.Message });
-                return false;
+                var result = new SalesOrderResultDTO() { IsValid = false, SalesOrder = null };
+                result.Messages.Add(new MessageDTO() { Id = 1, Message = "Failed to process sales order data." });
+                result.Messages.Add(new MessageDTO() { Id = 2, Message = ex.Message });
+                return result;
             }
         }
     }

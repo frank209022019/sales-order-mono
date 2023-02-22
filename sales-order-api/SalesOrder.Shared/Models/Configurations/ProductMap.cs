@@ -1,24 +1,27 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SalesOrder.Database.Models.Seed;
+using SalesOrder.Shared.Models.Seed;
 
-namespace SalesOrder.Database.Models.Configurations
+namespace SalesOrder.Shared.Models.Configurations
 {
-    public class CategoryMap : IEntityTypeConfiguration<Category>
+    public class ProductMap : IEntityTypeConfiguration<Product>
     {
-        public void Configure(EntityTypeBuilder<Category> builder)
+        public void Configure(EntityTypeBuilder<Product> builder)
         {
-            builder.ToTable("Categories");
+            builder.ToTable("Products");
 
             builder.HasKey(i => i.Id);
 
-            builder.Property(i => i.CategoryCode)
+            builder.Property(i => i.ProductCode)
               .IsRequired()
               .HasMaxLength(10);
 
             builder.Property(i => i.Description)
              .IsRequired()
              .HasMaxLength(50);
+
+            builder.Property(i => i.Price)
+             .IsRequired();
 
             builder.Property(i => i.CreatedById)
               .IsRequired();
@@ -39,7 +42,7 @@ namespace SalesOrder.Database.Models.Configurations
             builder.Property(r => r.DateDeleted).HasDefaultValue(null);
 
             // Seed
-            CategorySeed.AddSeedData(builder);
+            ProductSeed.AddSeedData(builder);
         }
     }
 }

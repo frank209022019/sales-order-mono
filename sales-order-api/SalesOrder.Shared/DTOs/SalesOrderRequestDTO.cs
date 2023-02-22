@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SalesOrder.Shared.Models;
 
 namespace SalesOrder.Shared.DTOs
 {
@@ -33,15 +34,15 @@ namespace SalesOrder.Shared.DTOs
 
     #endregion DTO
 
-    #region Validate-Deserilialize
+    #region Validate-Deserilialize-Process
 
-    public class ValidateDeserilalizeResultDTO
+    public class SalesOrderResultDTO
     {
         public bool IsValid { get; set; }
         public List<MessageDTO> Messages { get; set; }
-        public SalesOrderRequestDTO? SalesOrder { get; set; }
+        public object? SalesOrder { get; set; } //  SalesOrderRequestDTO || Order
 
-        public ValidateDeserilalizeResultDTO()
+        public SalesOrderResultDTO()
         {
             Messages = new List<MessageDTO>();
         }

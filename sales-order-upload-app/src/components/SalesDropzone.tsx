@@ -43,10 +43,9 @@ const onFileDrop = async (event: any) => {
 			.then((result: ISalesOrderResponseDTO) => {
 				// Handle result
 				if (!result.isValid) {
-					toast.error(`The file ${file.name} contains errors. See the response file for more information`);
-					onDownloadFile(result.data, result.fileName ?? 'sales_order_response.json');
+					onDownloadFile(result.data, result.fileName ?? 'sales_order_response.json', file.name, true);
 				} else {
-					toast.success(`The file ${file.name} submitted successfully. See the expected sales order file`);
+					// onDownloadFile(result.data, result.fileName ?? 'sales_order_response.json', file.name, false);
 				}
 			})
 			.catch(error => {
@@ -60,14 +59,21 @@ const onFileDrop = async (event: any) => {
 	}
 };
 
-const onDownloadFile = (jsonString: string, fileName: string) => {
+const onDownloadFile = (jsonString: string, newFileName: string, sourceFileName: string, hasError: boolean) => {
 	const data = new Blob([jsonString], {type: 'application/json'});
 	const url = URL.createObjectURL(data);
 	const link = document.createElement('a');
 	link.href = url;
-	link.setAttribute('download', fileName);
+	link.setAttribute('download', newFileName);
 	document.body.appendChild(link);
 	link.click();
+
+	// Display toast
+	if (hasError) {
+		toast.error(`The file ${sourceFileName} contains errors. See the response file for more information`);
+	} else {
+		toast.success(`The file ${sourceFileName} submitted successfully. See the expected sales order file`);
+	}
 };
 
 // #endregion
@@ -76,7 +82,7 @@ const SalesDropzone = () => {
 	const onDropAccepted = useCallback((acceptedFiles: any) => {
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		onFileDrop(acceptedFiles);
-	}, [onFileDrop]);
+	}, []);
 
 	const {getRootProps, getInputProps, isDragActive} = useDropzone({
 		onDrop: onDropAccepted,

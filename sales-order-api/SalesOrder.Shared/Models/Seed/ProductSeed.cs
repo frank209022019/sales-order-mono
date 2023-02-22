@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SalesOrder.Shared.Utilities;
 
-namespace SalesOrder.Database.Models.Seed
+namespace SalesOrder.Shared.Models.Seed
 {
     public class ProductSeed
     {

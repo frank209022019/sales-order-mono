@@ -1,6 +1,6 @@
-﻿using SalesOrder.Database.Models.Utilities;
+﻿using SalesOrder.Shared.Models.Utilities;
 
-namespace SalesOrder.Database.Models
+namespace SalesOrder.Shared.Models
 {
     #region Order
 

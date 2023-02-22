@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SalesOrder.Database.Models.Utilities
+namespace SalesOrder.Shared.Models.Utilities
 {
     public interface IIdentify
     {
