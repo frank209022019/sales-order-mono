@@ -134,22 +134,18 @@ namespace SalesOrder.Shared.DTOs
             Products = new List<OrderProductDTO>();
             foreach(var prod in order.OrderProducts)
             {
-
+                Products.Add(new OrderProductDTO()
+                {
+                    ProductCode = prod.Product.ProductCode,
+                    Name = prod.Product.Name,
+                    Price= prod.Product.Price,
+                    Quantity = prod.Quantity,
+                    SubTotal = prod.SubTotal,
+                    TaxTotal = prod.TaxAmount,
+                    Total = prod.Total,
+                });
             }
         }
     }
-
-    public class OrderProductDTO
-    { 
-        public string ProductCode { get; set; }
-        public string Name { get; set; }
-        public decimal Price { get; set; }
-        public int Quantity { get; set; }
-        public decimal SubTotal { get; set; }
-        public decimal TaxTotal { get; set; }
-        public decimal Total { get; set; }
-    }
-
-
     #endregion Success
 }

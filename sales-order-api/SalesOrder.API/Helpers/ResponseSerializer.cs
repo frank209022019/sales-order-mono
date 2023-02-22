@@ -36,10 +36,8 @@ namespace SalesOrder.API.Helpers
         /// <summary>
         /// Static function to write a json file for a succesful response for a sales order.
         /// </summary>
-        public static string CreateSuccessResponseJsonFile(Order order)
+        public static string CreateSuccessResponseJsonFile(Order order, string fileName)
         {
-            string fileName = string.Empty;
-
             // Format
             SuccessResponseStructureDTO response = new SuccessResponseStructureDTO(order);
             string json = JsonConvert.SerializeObject(response, Formatting.Indented);

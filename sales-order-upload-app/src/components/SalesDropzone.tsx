@@ -1,9 +1,8 @@
 
 /* eslint-disable no-negated-condition */
-import React, {useCallback} from 'react';
+import {useCallback, useState} from 'react';
 import {useDropzone} from 'react-dropzone';
-import {toast, ToastContainer, useToast} from 'react-toastify';
-import {upload} from '@testing-library/user-event/dist/upload';
+import {toast} from 'react-toastify';
 import styled from 'styled-components';
 
 import {type ISalesOrderResponseDTO} from '../models/IResponse';
@@ -45,7 +44,7 @@ const onFileDrop = async (event: any) => {
 				if (!result.isValid) {
 					onDownloadFile(result.data, result.fileName ?? 'sales_order_response.json', file.name, true);
 				} else {
-					// onDownloadFile(result.data, result.fileName ?? 'sales_order_response.json', file.name, false);
+					onDownloadFile(result.data, result.fileName ?? 'sales_order_response.json', file.name, false);
 				}
 			})
 			.catch(error => {
@@ -92,15 +91,17 @@ const SalesDropzone = () => {
 	});
 
 	return (
-		<DropzoneWrapper>
-			<section className='dropzone-section container-fluid text-center w-50 h-50 border rounded mt-5 p-3'>
-				<div {...getRootProps({className: 'dropzone'})}>
-					<input {...getInputProps()} />
-					<p>Drag 'n' drop a <em>JSON</em> file here, or click to select a file</p>
-					<em>(1 file is the maximum number of files you can drop here)</em>
-				</div>
-			</section>
-		</DropzoneWrapper>
+		<>
+			<DropzoneWrapper>
+				<section className='dropzone-section container-fluid text-center w-50 h-50 border rounded mt-5 p-3'>
+					<div {...getRootProps({className: 'dropzone'})}>
+						<input {...getInputProps()} />
+						<p>Drag 'n' drop a <em>JSON</em> file here, or click to select a file</p>
+						<em>(1 file is the maximum number of files you can drop here)</em>
+					</div>
+				</section>
+			</DropzoneWrapper>
+		</>
 	);
 };
 

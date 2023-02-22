@@ -14,10 +14,10 @@
                 .Select(s => s[random.Next(s.Length)]).ToArray());
 
             // Get the current date in the format yyyyMMdd
-            string date = DateTime.Today.ToString("yyyyMMdd");
+            string date = DateTime.Today.ToString("yyyyMMdd").ToUpper();
 
             // Combine the random string and the date to create the order code
-            string orderCode = $"{randomString}-{date}";
+            string orderCode = $"{randomString}{date}";
 
             return orderCode;
         }

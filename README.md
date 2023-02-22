@@ -1,10 +1,12 @@
-# SalesOrder Assesment
+# SalesOrder Assessment
 
 This monorepo contains two distinct projects: `sales-order-api` and `sales-order-upload-app`. Both projects are designed to enable the uploading and processing of sales orders.
 
 The `sales-order-api` project is a RESTful API that serves as the backend for the sales order system. It provides an endpoint for uploading and processing sales orders.
 
 The `sales-order-upload-app` project is a web application that allows users to upload sales orders in a JSON format file. The app then processes the uploaded data and sends it to the "sales-order-api" backend for further processing.
+
+*This is just a sample solution and therefore no authentication, authrorization or caching mechanisms have been implemented*.
 
 ---
 

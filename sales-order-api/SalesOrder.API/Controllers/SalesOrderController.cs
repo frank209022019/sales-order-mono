@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using SalesOrder.API.Helpers;
 using SalesOrder.Service.Interfaces;
 using SalesOrder.Shared.DTOs;
+using SalesOrder.Shared.Models;
 using Serilog;
 
 namespace SalesOrder.API.Controllers
@@ -23,11 +24,10 @@ namespace SalesOrder.API.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Upload([FromForm] IFormFile salesOrder)
         {
+            // Default
+            string errorFileName = $"sales_order_response_{DateTime.Now.ToString("yyyyMMdd").ToUpper()}.json";
             try
             {
-                // Default
-                string errorFileName = $"sales_order_response_{DateTime.Now.ToString("yyyyMMdd")}.json";
-
                 // Validate file & length
                 SalesOrderResultDTO isValidFile = await _service.ValidateSalesOrderFile(salesOrder);
                 if (!isValidFile.IsValid)
@@ -67,7 +67,6 @@ namespace SalesOrder.API.Controllers
                     });
                 }
 
-                // TODO: Generate success file
                 // Database operation
                 var validOperation = await _service.ProcessSalesOrder((SalesOrderRequestDTO)isValidDTO.SalesOrder);
                 if (!validOperation.IsValid)
@@ -79,13 +78,32 @@ namespace SalesOrder.API.Controllers
                         Data = ResponseSerializer.CreateFailedResponseJsonFile(validateResult, errorFileName)
                     });
                 }
-
-                return Ok(new SalesOrderResponseDTO() { IsValid = true });
+                else
+                {
+                    // Create successful result
+                    Order succssOrder = (Order)validOperation.SalesOrder;
+                    string successFileName = $"{succssOrder.OrderCode}_{succssOrder.Category.CategoryCode}_{DateTime.Now.ToString("yyyyMMdd").ToUpper()}.json";
+                    return Ok(new SalesOrderResponseDTO()
+                    {
+                        IsValid = true,
+                        FileName = successFileName,
+                        Data = ResponseSerializer.CreateSuccessResponseJsonFile(succssOrder, successFileName)
+                    });
+                }
             }
             catch (Exception ex)
             {
                 Log.Error(ex.Message);
-                return BadRequest();
+
+                // BadRequest with object
+                List<MessageDTO> messages = new List<MessageDTO>
+                { new MessageDTO { Id = 1, Message = ex.Message } };
+                return BadRequest(new SalesOrderResponseDTO()
+                {
+                    IsValid = false,
+                    FileName = errorFileName,
+                    Data = ResponseSerializer.CreateFailedResponseJsonFile(messages, errorFileName)
+                });
             }
         }
     }
