@@ -46,7 +46,7 @@ const onFileDrop = async (event: any) => {
 					toast.error(`The file ${file.name} contains errors. See the response file for more information`);
 					onDownloadFile(result.data, result.fileName ?? 'sales_order_response.json');
 				} else {
-					toast.error(`The file ${file.name} submitted successfully. See the expected sales order file`);
+					toast.success(`The file ${file.name} submitted successfully. See the expected sales order file`);
 				}
 			})
 			.catch(error => {

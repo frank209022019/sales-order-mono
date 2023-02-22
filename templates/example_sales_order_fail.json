@@ -1,0 +1,16 @@
+{
+    "userCode": "FAILUSR#1",
+    "categoryCode": "FAILCAT#1",
+    "orderDate": "1999-02-22",
+    "customerCode": "HEELOCUS#1",
+    "productItems": [
+      {
+        "productCode": "PROD#1",
+        "quantity": 2
+      },
+      {
+        "productCode": "PROD#2",
+        "quantity": 1
+      }
+    ]
+  }

@@ -130,7 +130,7 @@ namespace SalesOrder.Service.Services
                 // 6. Product validation - valid product code, quantity
                 if (salesOrder.Products.Any())
                 {
-                    var products = _context.Products.Where(i => !i.IsActive).ToList();
+                    var products = _context.Products.Where(i => i.IsActive).ToList();
                     salesOrder.Products.ForEach((SalesOrderProductRequestDTO prod) =>
                     {
                         if (prod.Quantity < 1 || !products.Where(i => i.ProductCode == prod.ProductCode).Any())

@@ -69,7 +69,7 @@ namespace SalesOrder.API.Controllers
 
                 // Database operation
 
-                return Ok();
+                return Ok(new SalesOrderResponseDTO() { IsValid = true });
             }
             catch (Exception ex)
             {
