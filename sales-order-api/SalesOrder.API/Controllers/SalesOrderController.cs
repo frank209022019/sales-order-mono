@@ -29,7 +29,7 @@ namespace SalesOrder.API.Controllers
                 string errorFileName = $"sales_order_response_{DateTime.Now.ToString("yyyyMMdd")}.json";
 
                 // Validate file & length
-                ValidateDeserilalizeResultDTO isValidFile = await _service.ValidateSalesOrderFile(salesOrder);
+                SalesOrderResultDTO isValidFile = await _service.ValidateSalesOrderFile(salesOrder);
                 if (!isValidFile.IsValid)
                 {
                     // Return response with invalid & messages
@@ -42,7 +42,7 @@ namespace SalesOrder.API.Controllers
                 }
 
                 // Try to deserialize json contents to DTO
-                ValidateDeserilalizeResultDTO isValidDTO = await _service.DeseriliazeSalesOrder(salesOrder);
+                SalesOrderResultDTO isValidDTO = await _service.DeseriliazeSalesOrder(salesOrder);
                 if (!isValidDTO.IsValid)
                 {
                     // Return response with invalid & messages
@@ -55,7 +55,7 @@ namespace SalesOrder.API.Controllers
                 }
 
                 // Validate data from json file
-                List<MessageDTO> validateResult = await _service.ValidateSalesOrder(isValidDTO.SalesOrder);
+                List<MessageDTO> validateResult = await _service.ValidateSalesOrder((SalesOrderRequestDTO)isValidDTO.SalesOrder);
                 if (validateResult.Count() > 0)
                 {
                     // Return response with invalid & messages
@@ -69,10 +69,9 @@ namespace SalesOrder.API.Controllers
 
                 // TODO: Generate success file
                 // Database operation
-                var validOperation = await _service.ProcessSalesOrder(isValidDTO.SalesOrder);
-                if (!validOperation)
+                var validOperation = await _service.ProcessSalesOrder((SalesOrderRequestDTO)isValidDTO.SalesOrder);
+                if (!validOperation.IsValid)
                 {
-                    // TODO: Return response with invalid & messages
                     return Ok(new SalesOrderResponseDTO()
                     {
                         IsValid = false,
