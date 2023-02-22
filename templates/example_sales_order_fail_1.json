@@ -1,0 +1,16 @@
+{
+    "userCode": "USR#1",
+    "categoryCode": "CAT#1",
+    "orderDate": "2023-02-22",
+    "customerCode": "CUS#1FAIL",
+    "products": [
+      {
+        "productCode": "PROD#1FAIL",
+        "quantity": 2
+      },
+      {
+        "productCode": "PROD#2",
+        "quantity": 1
+      }
+    ]
+  }

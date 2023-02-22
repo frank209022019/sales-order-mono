@@ -28,6 +28,9 @@ namespace SalesOrder.Database.Models.Configurations
             builder.Property(i => i.Total)
                .IsRequired();
 
+            builder.Property(i => i.VAT)
+               .IsRequired();
+
             builder.HasOne(i => i.Customer)
                .WithMany(o => o.Orders);
 

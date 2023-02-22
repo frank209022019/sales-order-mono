@@ -26,6 +26,7 @@ namespace SalesOrder.Database.Models
         public decimal SubTotal { get; set; }
         public decimal TaxAmount { get; set; }
         public decimal Total { get; set; }
+        public string VAT { get; set; }
 
         #endregion Properties
 
@@ -65,7 +66,6 @@ namespace SalesOrder.Database.Models
         public decimal SubTotal { get; set; }
         public decimal TaxAmount { get; set; }
         public decimal Total { get; set; }
-        public string VAT { get; set; }
 
         #endregion Properties
 

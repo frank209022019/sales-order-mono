@@ -32,7 +32,7 @@ namespace SalesOrder.API.Controllers
                 ValidateDeserilalizeResultDTO isValidFile = await _service.ValidateSalesOrderFile(salesOrder);
                 if (!isValidFile.IsValid)
                 {
-                    // TODO: Return response with invalid & messages
+                    // Return response with invalid & messages
                     return Ok(new SalesOrderResponseDTO()
                     {
                         IsValid = false,
@@ -45,7 +45,7 @@ namespace SalesOrder.API.Controllers
                 ValidateDeserilalizeResultDTO isValidDTO = await _service.DeseriliazeSalesOrder(salesOrder);
                 if (!isValidDTO.IsValid)
                 {
-                    // TODO: Return response with invalid & messages
+                    // Return response with invalid & messages
                     return Ok(new SalesOrderResponseDTO()
                     {
                         IsValid = false,
@@ -58,7 +58,7 @@ namespace SalesOrder.API.Controllers
                 List<MessageDTO> validateResult = await _service.ValidateSalesOrder(isValidDTO.SalesOrder);
                 if (validateResult.Count() > 0)
                 {
-                    // TODO: Return response with invalid & messages
+                    // Return response with invalid & messages
                     return Ok(new SalesOrderResponseDTO()
                     {
                         IsValid = false,
@@ -67,7 +67,19 @@ namespace SalesOrder.API.Controllers
                     });
                 }
 
+                // TODO: Generate success file
                 // Database operation
+                var validOperation = await _service.ProcessSalesOrder(isValidDTO.SalesOrder);
+                if (!validOperation)
+                {
+                    // TODO: Return response with invalid & messages
+                    return Ok(new SalesOrderResponseDTO()
+                    {
+                        IsValid = false,
+                        FileName = errorFileName,
+                        Data = ResponseSerializer.CreateFailedResponseJsonFile(validateResult, errorFileName)
+                    });
+                }
 
                 return Ok(new SalesOrderResponseDTO() { IsValid = true });
             }

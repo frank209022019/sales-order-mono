@@ -45,7 +45,7 @@ namespace SalesOrder.Service.Services
                 // Failure to validate salesOrder
                 var result = new ValidateDeserilalizeResultDTO() { IsValid = false, SalesOrder = null };
                 result.Messages.Add(new MessageDTO() { Id = 1, Message = "Failed to validate incoming sales order file." });
-                result.Messages.Add(new MessageDTO() { Id = 2, Message = ex.InnerException.Message });
+                result.Messages.Add(new MessageDTO() { Id = 2, Message = ex.Message });
                 return result;
             }
         }
@@ -77,7 +77,7 @@ namespace SalesOrder.Service.Services
                 // Failure to deserialze salesOrder
                 var result = new ValidateDeserilalizeResultDTO() { IsValid = false, SalesOrder = null };
                 result.Messages.Add(new MessageDTO() { Id = 1, Message = "Failed to deserialze incoming sales order structure." });
-                result.Messages.Add(new MessageDTO() { Id = 2, Message = ex.InnerException.Message });
+                result.Messages.Add(new MessageDTO() { Id = 2, Message = ex.Message });
                 return result;
             }
         }
@@ -93,14 +93,14 @@ namespace SalesOrder.Service.Services
                 int currentMessageId = 1;
 
                 // 1. Valid user code
-                if (!_context.Users.Where(i => i.IsActive).Any())
+                if (!_context.Users.Where(i => i.IsActive && i.UserCode == salesOrder.UserCode).Any())
                 {
                     messages.Add(new MessageDTO() { Id = currentMessageId, Message = "Invalid user code in sales order" });
                     currentMessageId++;
                 }
 
                 // 2. Valid category code
-                if (!_context.Categories.Where(i => i.IsActive).Any())
+                if (!_context.Categories.Where(i => i.IsActive && i.CategoryCode == salesOrder.CategoryCode).Any())
                 {
                     messages.Add(new MessageDTO() { Id = currentMessageId, Message = "Invalid category code in sales order" });
                     currentMessageId++;
@@ -114,7 +114,7 @@ namespace SalesOrder.Service.Services
                 }
 
                 // 4. Valid customer code
-                if (!_context.Categories.Where(i => i.IsActive).Any())
+                if (!_context.Customers.Where(i => i.IsActive && i.CustomerCode == salesOrder.CustomerCode).Any())
                 {
                     messages.Add(new MessageDTO() { Id = currentMessageId, Message = "Invalid category code in sales order" });
                     currentMessageId++;
@@ -150,7 +150,7 @@ namespace SalesOrder.Service.Services
                 // Failure to validate salesOrder
                 var result = new List<MessageDTO>();
                 result.Add(new MessageDTO() { Id = 1, Message = "Failed to validate incoming sales order data." });
-                result.Add(new MessageDTO() { Id = 2, Message = ex.InnerException.Message });
+                result.Add(new MessageDTO() { Id = 2, Message = ex.Message });
                 return result;
             }
         }
@@ -182,6 +182,7 @@ namespace SalesOrder.Service.Services
                     SubTotal = 0,
                     TaxAmount = 0,
                     Total = 0,
+                    VAT = SalesOrderContstants.VATPercentage.ToString().ToUpper(),
                 };
 
                 // Create OrderProduct record/s
@@ -189,9 +190,9 @@ namespace SalesOrder.Service.Services
                 foreach(var product in salesOrder.Products)
                 {
                     // Work out financials
-                    var currentPrice = products.FirstOrDefault(i => i.ProductCode == product.ProductCode).Price;
-                    var total = currentPrice * product.Quantity;
-                    var tax = (SalesOrderContstants.VATPercentage / 100) * total;
+                    var currentPrice = Math.Round(products.FirstOrDefault(i => i.ProductCode == product.ProductCode).Price, 2);
+                    var total = Math.Round(currentPrice * product.Quantity, 2);
+                    var tax = Math.Round((SalesOrderContstants.VATPercentage / 100) * total, 2);
 
                     // Create model
                     OrderProduct temp = new OrderProduct()
@@ -203,16 +204,15 @@ namespace SalesOrder.Service.Services
                         CurrentProductPrice = currentPrice,
                         Total = total,
                         TaxAmount = tax,
-                        SubTotal = total - tax,
-                        VAT = SalesOrderContstants.VATPercentage.ToString().ToUpper(),
+                        SubTotal = Math.Round(total - tax, 2),
                     };
                     orderProducts.Add(temp);
                 }
 
                 // Update order total
-                order.Total = orderProducts.Sum(i => i.Total);
-                order.TaxAmount = orderProducts.Sum(i => i.TaxAmount);
-                order.SubTotal = orderProducts.Sum(i => i.SubTotal);
+                order.Total = Math.Round(orderProducts.Sum(i => i.Total), 2);
+                order.TaxAmount = Math.Round(orderProducts.Sum(i => i.TaxAmount), 2);
+                order.SubTotal = Math.Round(orderProducts.Sum(i => i.SubTotal), 2);
 
                 // Save to database
                 _context.Orders.Add(order);
@@ -230,7 +230,7 @@ namespace SalesOrder.Service.Services
                 // Failure to process salesOrder
                 var result = new List<MessageDTO>();
                 result.Add(new MessageDTO() { Id = 1, Message = "Failed to process sales order data." });
-                result.Add(new MessageDTO() { Id = 2, Message = ex.InnerException.Message });
+                result.Add(new MessageDTO() { Id = 2, Message = ex.Message });
                 return false;
             }
         }
