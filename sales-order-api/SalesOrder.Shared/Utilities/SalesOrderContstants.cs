@@ -3,9 +3,10 @@
     public class SalesOrderContstants
     {
         #region Utilities
+
         public static readonly decimal VATPercentage = 15;
 
-        #endregion
+        #endregion Utilities
 
         #region Database
 
@@ -19,10 +20,10 @@
 
         public static readonly string UserCode1 = "USR#1";
 
-
         #endregion Users
 
         #region Categories
+
         public static readonly Guid CategoryId1 = new("0a027927-135d-4ac0-b55d-efb28d0118e4");
         public static readonly Guid CategoryId2 = new("d6fbcfc5-e4dd-4b66-8098-d56f5e1408a6");
         public static readonly Guid CategoryId3 = new("42be8c07-c7e6-4582-a980-918e769f809d");
@@ -44,6 +45,7 @@
         #endregion Customers
 
         #region Products
+
         public static readonly Guid ProductId1 = new("7d0bcb8d-e459-4885-975a-588741fe1905");
         public static readonly Guid ProductId2 = new("760f4974-68d6-4403-aff6-29ef670abd01");
         public static readonly Guid ProductId3 = new("4194ff3b-0c2d-456b-8314-08f7ee3bc8e0");
@@ -52,6 +54,6 @@
         public static readonly string ProductCode2 = "PROD#2";
         public static readonly string ProductCode3 = "PROD#3";
 
-        #endregion
+        #endregion Products
     }
 }

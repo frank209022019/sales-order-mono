@@ -14,15 +14,15 @@ The `sales-order-upload-app` project is a web application that allows users to u
 
 ## Overview
 
-This is a create-react-app project that serves as the client for the SalesOrder API project. The project is built using React and TypeScript and consumes the `SalesOrder.API` to display and process sales orders. The project uses several third-party packages for styling and functionality.
+This is a create-react-app project that serves as the client for the `SalesOrder API` project. The project is built using React and TypeScript and consumes the `SalesOrder.API` to display and process sales orders. The project uses several third-party packages for styling and functionality.
 
 ## Installation and Setup
 
-To install and run the SalesOrderClient project, please follow the steps below:
+To install and run the `sales-order-upload-app` project, please follow the steps below:
 
 1. Install Node.js and npm from [Node.js official website](https://nodejs.org/en/).
 2. Clone the repository to your local machine.
-3. Navigate to the SalesOrderClient project directory in your terminal or command prompt.
+3. Navigate to the `sales-order-upload-app` project root directory in your terminal or command prompt.
 4. Run the command `npm install` to install the project dependencies.
 5. Run the command `npm start` to start the application.
 
@@ -97,9 +97,9 @@ This project is licensed under the [MIT License](https://opensource.org/licenses
 
 ---
 
-# Testing Files
+# Testing Files & Responses
 
-There is a folder named `Templates` in the root directory of the solution that includes some JSON templates that can be utilized to test the upload feature. The `SalesOrder.Service` functionality verifies the JSON file and its data against the following criteria:
+There is a folder named `templates` in the root directory of the solution that includes some JSON templates that can be utilized to test the upload feature. The `SalesOrder.Service` functionality verifies the JSON file and its data against the following criteria:
 
 - User code
 - Category code
@@ -107,3 +107,84 @@ There is a folder named `Templates` in the root directory of the solution that i
 - Customer code
 - Product count
 - Product code & quantity
+
+The `SalesOrder.API` will return a response that could contain information regarding the failure or success of the request.
+
+If the request has failed due to validation, server or any other issues, a JSON file with the naming strucutre `FAILED_SALES_ORDER_[DATE].json` will be returned. An example of the file structure will be:
+
+```
+{
+  "result": "FAILED",
+  "messages": [
+    {
+      "id": 1,
+      "message": "Invalid user code in sales order"
+    },
+    {
+      "id": 2,
+      "message": "Invalid category code in sales order"
+    },
+    {
+      "id": 3,
+      "message": "Invalid date or date format in sales order"
+    },
+    {
+      "id": 4,
+      "message": "Invalid category code in sales order"
+    },
+    {
+      "id": 5,
+      "message": "No products found in sales order"
+    }
+  ]
+}
+```
+
+If the request has successfully been completed, then the server will return  a different formatted JSON file with the naming structure `ORD[RANDOM_ORDER_CODE]_[CATEGORY_CODE]_[DATE].json`. This is the expected sale order for the request and an example of the file structure will be: 
+
+```
+{
+  "userCode": "USR#1",
+  "userFullName": "User, System",
+  "orderCode": "ORDPJT5I7K20230222",
+  "orderDate": "2023-02-22 15:19",
+  "customerCode": "CUS#1",
+  "customerName": "Golden Gate Consulting",
+  "customerEmail": "golden@nomail.com",
+  "customerContact": "081-3110121",
+  "shippingAddress": "123 Main Street, Anytown, USA",
+  "billingAddress": "123 Main Street, Anytown, USA",
+  "vatPercentage": "15",
+  "totalProduct": 2.0,
+  "subTotal": 68.00,
+  "taxTotal": 12.00,
+  "orderTotal": 80.00,
+  "result": "SUCCESS",
+  "messages": [
+    {
+      "id": 1,
+      "message": "Sales order completed successfully"
+    }
+  ],
+  "products": [
+    {
+      "productCode": "PROD#1",
+      "name": "Product #1",
+      "price": 20.00,
+      "quantity": 2,
+      "subTotal": 34.00,
+      "taxTotal": 6.00,
+      "total": 40.00
+    },
+    {
+      "productCode": "PROD#2",
+      "name": "Product #2",
+      "price": 40.00,
+      "quantity": 1,
+      "subTotal": 34.00,
+      "taxTotal": 6.00,
+      "total": 40.00
+    }
+  ]
+}
+```

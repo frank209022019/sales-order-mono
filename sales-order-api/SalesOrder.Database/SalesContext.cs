@@ -31,7 +31,6 @@ namespace SalesOrder.Database
             modelBuilder.ApplyConfiguration(new ProductMap());
             modelBuilder.ApplyConfiguration(new OrderMap());
             modelBuilder.ApplyConfiguration(new OrderProductMap());
-
         }
     }
 }

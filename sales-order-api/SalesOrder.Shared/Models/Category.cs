@@ -23,10 +23,12 @@ namespace SalesOrder.Shared.Models
 
         public string Description { get; set; }
 
-        #endregion
+        #endregion Properties
 
         #region Navigation
+
         public virtual List<Order> Orders { get; set; }
-        #endregion
+
+        #endregion Navigation
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using SalesOrder.Shared.Models;
 
 namespace SalesOrder.Shared.DTOs
 {
@@ -48,5 +47,5 @@ namespace SalesOrder.Shared.DTOs
         }
     }
 
-    #endregion Validate-Deserilialize
+    #endregion Validate-Deserilialize-Process
 }

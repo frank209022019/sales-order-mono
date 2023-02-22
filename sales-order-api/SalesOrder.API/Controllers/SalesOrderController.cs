@@ -13,7 +13,7 @@ namespace SalesOrder.API.Controllers
     public class SalesOrderController : Controller
     {
         private readonly ISalesOrderService _service;
-        private string errorFileName = $"sales_order_response_{DateTime.Now.ToString("yyyyMMdd").ToUpper()}.json";
+        private string errorFileName = $"FAILED_SALES_ORDER_{DateTime.Now.ToString("yyyyMMdd").ToUpper()}.json";
 
         public SalesOrderController(ISalesOrderService service)
         {

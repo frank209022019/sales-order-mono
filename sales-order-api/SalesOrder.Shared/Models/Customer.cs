@@ -30,8 +30,9 @@ namespace SalesOrder.Shared.Models
         #endregion Properties
 
         #region Navigation
+
         public virtual ICollection<Order> Orders { get; set; }
 
-        #endregion
+        #endregion Navigation
     }
 }

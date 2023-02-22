@@ -186,7 +186,7 @@ namespace SalesOrder.Service.Services
                 };
 
                 // Create OrderProduct record/s
-                foreach(var product in salesOrder.Products)
+                foreach (var product in salesOrder.Products)
                 {
                     // Work out financials
                     var currentPrice = Math.Round(products.FirstOrDefault(i => i.ProductCode == product.ProductCode).Price, 2);
