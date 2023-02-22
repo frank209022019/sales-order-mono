@@ -21,7 +21,7 @@ This is a create-react-app project that serves as the client for the `SalesOrder
 To install and run the `sales-order-upload-app` project, please follow the steps below:
 
 1. Install Node.js and npm from [Node.js official website](https://nodejs.org/en/).
-2. Clone the repository to your local machine.
+2. Clone the repository to your local machine from [GitHub](https://github.com/frank209022019/sales-order-mono). 
 3. Navigate to the `sales-order-upload-app` project root directory in your terminal or command prompt.
 4. Run the command `npm install` to install the project dependencies.
 5. Run the command `npm start` to start the application.
@@ -64,7 +64,7 @@ To install and run the SalesOrder API project, please follow the steps below:
 
 1. Install .NET 6 SDK and runtime from [Microsoft's official website](https://dotnet.microsoft.com/download/dotnet/6.0).
 
-2. Clone the repository to your local machine
+2. Clone the repository to your local machine from [GitHub](https://github.com/frank209022019/sales-order-mono).
 
 3. Update the connection string in the SalesOrder.API `appsettings.development.json` file to point to your database
 
