@@ -13,6 +13,7 @@ namespace SalesOrder.API.Controllers
     public class SalesOrderController : Controller
     {
         private readonly ISalesOrderService _service;
+        private string errorFileName = $"sales_order_response_{DateTime.Now.ToString("yyyyMMdd").ToUpper()}.json";
 
         public SalesOrderController(ISalesOrderService service)
         {
@@ -24,8 +25,6 @@ namespace SalesOrder.API.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Upload([FromForm] IFormFile salesOrder)
         {
-            // Default
-            string errorFileName = $"sales_order_response_{DateTime.Now.ToString("yyyyMMdd").ToUpper()}.json";
             try
             {
                 // Validate file & length

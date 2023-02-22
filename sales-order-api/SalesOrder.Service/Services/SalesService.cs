@@ -93,43 +93,42 @@ namespace SalesOrder.Service.Services
                 int currentMessageId = 1;
 
                 // 1. Valid user code
-                if (!_context.Users.Where(i => i.IsActive && i.UserCode == salesOrder.UserCode).Any())
+                if (salesOrder.UserCode == null || !_context.Users.Where(i => i.IsActive && i.UserCode == salesOrder.UserCode).Any())
                 {
                     messages.Add(new MessageDTO() { Id = currentMessageId, Message = "Invalid user code in sales order" });
                     currentMessageId++;
                 }
 
                 // 2. Valid category code
-                if (!_context.Categories.Where(i => i.IsActive && i.CategoryCode == salesOrder.CategoryCode).Any())
+                if (salesOrder.CategoryCode == null || !_context.Categories.Where(i => i.IsActive && i.CategoryCode == salesOrder.CategoryCode).Any())
                 {
                     messages.Add(new MessageDTO() { Id = currentMessageId, Message = "Invalid category code in sales order" });
                     currentMessageId++;
                 }
 
                 // 3. Valid order date (between current date & 7 days before)
-                if (!(salesOrder.OrderDate >= DateTime.Now.AddDays(-7) && salesOrder.OrderDate <= DateTime.Now))
+                if (salesOrder.OrderDate == null || !(salesOrder.OrderDate >= DateTime.Now.AddDays(-7) && salesOrder.OrderDate <= DateTime.Now))
                 {
                     messages.Add(new MessageDTO() { Id = currentMessageId, Message = "Invalid date or date format in sales order" });
                     currentMessageId++;
                 }
 
                 // 4. Valid customer code
-                if (!_context.Customers.Where(i => i.IsActive && i.CustomerCode == salesOrder.CustomerCode).Any())
+                if (salesOrder.CustomerCode == null || !_context.Customers.Where(i => i.IsActive && i.CustomerCode == salesOrder.CustomerCode).Any())
                 {
                     messages.Add(new MessageDTO() { Id = currentMessageId, Message = "Invalid category code in sales order" });
                     currentMessageId++;
                 }
 
                 // 5. Valid count of products ( products > 1)
-                if (!salesOrder.Products.Any())
+                if (salesOrder.Products == null || !salesOrder.Products.Any())
                 {
-                    messages.Add(new MessageDTO() { Id = currentMessageId, Message = "No products in sales order" });
+                    messages.Add(new MessageDTO() { Id = currentMessageId, Message = "No products found in sales order" });
                     currentMessageId++;
                 }
-
-                // 6. Product validation - valid product code, quantity
-                if (salesOrder.Products.Any())
+                else
                 {
+                    // 6. Product validation - valid product code, quantity
                     var products = _context.Products.Where(i => i.IsActive).ToList();
                     salesOrder.Products.ForEach((SalesOrderProductRequestDTO prod) =>
                     {
