@@ -38,7 +38,7 @@ const onFileDrop = async (event: any) => {
 		toast.warning(`Please wait while file ${file.name} is uploaded`, {autoClose: 2000});
 
 		// Submit sales order
-		await submitSalesOrder(file)
+		await submitSalesOrder(file, true)
 			.then((result: ISalesOrderResponseDTO) => {
 				// Handle result
 				if (!result.isValid) {

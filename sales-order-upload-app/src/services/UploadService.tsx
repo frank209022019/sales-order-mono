@@ -1,13 +1,14 @@
 import {type ISalesOrderResponseDTO} from '../models/IResponse';
 
-const api = 'https://localhost:7057/api/sales-order';
+const api = 'https://localhost:7057/api/';
 
-export const submitSalesOrder = async (salesOrder: File) => new Promise<ISalesOrderResponseDTO>((resolve, reject) => {
+export const submitSalesOrder = async (salesOrder: File, forJas: boolean) => new Promise<ISalesOrderResponseDTO>((resolve, reject) => {
 	// append to formData
 	const formData = new FormData();
 	formData.append('salesOrder', salesOrder);
 	// POST: /upload
-	fetch(`${api}/upload`, {
+	const controller = forJas ? 'jas-sales-order/upload' : 'sales-order/upload';
+	fetch(`${api}${controller}`, {
 		method: 'POST',
 		body: formData,
 	})

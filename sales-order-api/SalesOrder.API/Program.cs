@@ -35,6 +35,7 @@ builder.Host.UseSerilog((ctx, lc) => lc
 
 // Services
 builder.Services.AddTransient<ISalesOrderService, SalesOrderService>();
+builder.Services.AddTransient<IJASSalesService, JASSalesService>();
 
 var app = builder.Build();
 
