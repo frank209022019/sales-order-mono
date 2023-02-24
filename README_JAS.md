@@ -125,63 +125,63 @@ If the request has failed due to validation, server or any other issues, a JSON 
 }
 ```
 
-If the request has successfully been completed, then the server will return  a different formatted JSON file with the naming structure `ORD[RANDOM_ORDER_CODE]_[CATEGORY_CODE]_[DATE].json`. This is the expected sale order for the request and an example of the file structure will be: 
+If the request has successfully been completed, then the server will return  a different formatted JSON file with the naming structure `[ORDER_REFERENCE]_[CATEGORY_CODE]_[CURRENT_DATE].json`. This is the expected sale order for the request and an example of the file structure will be: 
 
 ```
 {
-	"order": {
-		"orderRef": "TestSO123",
-		"orderDate": "2023/01/23",
-		"currency": "EUR",
-		"shipDate": "2023/01/23",
-		"categoryCode": "B2C",
-		"addresses": [
-					{
-						"addressType": "BY",
-						"locationNumber": 1234,
-						"contactName": "Test Name",
-						"lastName": "Test Last Name",
-						"companyName": "Test Company Name",
-						"addressLine1": "123 Address Line 1",
-						"addressCity": "City",
-						"addressState": "State",
-						"postcode": 12345,
-						"countryCode": "ZA",
-						"phoneNumber": "",
-						"emailAddress": ""
-					},
-					{
-						"addressType": "ST",
-						"locationNumber": 1234,
-						"contactName": "Test Name",
-						"lastName": "Test Last Name",
-						"companyName": "Test Company Name",
-						"addressLine1": "123 Address Line 1",
-						"addressCity": "City",
-						"addressState": "State",
-						"postcode": 12345,
-						"countryCode": "ZA",
-						"phoneNumber": "",
-						"emailAddress": ""
-					}
-				],
-		"lines": [
-					{
-						"sku": "TestSKU1",
-						"qty": 1,
-						"desc": "Test SKU 1"
-					},
-					{
-						"sku": "TestSKU2",
-						"qty": 4,
-						"desc": "Test SKU 2"
-					},
-					{
-						"sku": "TestSKU3",
-						"qty": 8,
-						"desc": "Test SKU 3"
-					}
-				]
-	}
+    "order": {
+        "orderRef": "TestSO123",
+        "orderDate": "2023/01/23",
+        "currency": "EUR",
+        "shipDate": "2023/01/23",
+        "categoryCode": "B2C",
+        "addresses": [
+                    {
+                        "addressType": "BY",
+                        "locationNumber": 1234,
+                        "contactName": "Test Name",
+                        "lastName": "Test Last Name",
+                        "companyName": "Test Company Name",
+                        "addressLine1": "123 Address Line 1",
+                        "addressCity": "City",
+                        "addressState": "State",
+                        "postcode": 12345,
+                        "countryCode": "ZA",
+                        "phoneNumber": "",
+                        "emailAddress": ""
+                    },
+                    {
+                        "addressType": "ST",
+                        "locationNumber": 1234,
+                        "contactName": "Test Name",
+                        "lastName": "Test Last Name",
+                        "companyName": "Test Company Name",
+                        "addressLine1": "123 Address Line 1",
+                        "addressCity": "City",
+                        "addressState": "State",
+                        "postcode": 12345,
+                        "countryCode": "ZA",
+                        "phoneNumber": "",
+                        "emailAddress": ""
+                    }
+                ],
+        "lines": [
+                    {
+                        "sku": "TestSKU1",
+                        "qty": 1,
+                        "desc": "Test SKU 1"
+                    },
+                    {
+                        "sku": "TestSKU2",
+                        "qty": 4,
+                        "desc": "Test SKU 2"
+                    },
+                    {
+                        "sku": "TestSKU3",
+                        "qty": 8,
+                        "desc": "Test SKU 3"
+                    }
+                ]
+    }
 }
 ```
